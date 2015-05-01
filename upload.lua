@@ -8,18 +8,22 @@ end
 local serial = require 'serial'
 local port = serial.new()
 
-local function read()
+local function read(timeout)
+	local timeout = timeout or 100
 	local re = {}
-	local r, data, len = port:read(1000)
+	local r, data, len = port:read(256, timeout)
 	while r and len > 0 do
 		re[#re + 1] = data
-		r, data, len = port:read(1000)
+		r, data, len = port:read(256, timeout)
+	end
+	if #re == 0 then
+		return nil
 	end
 	print(table.concat(re))
 	return table.concat(re)
 end
 
-port:open('/dev/ttyUSB1', {flowcontrol = 'XON_XOFF'})
+port:open('/dev/ttyUSB2', {flowcontrol = 'XON_XOFF'})
 read()
 --[[
 print('Remove previous file')
@@ -46,6 +50,7 @@ end
 
 port:write('file.close()\n')
 read()
+
 port:write('node.restart()\n')
 
 while true do
