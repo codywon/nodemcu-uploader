@@ -23,7 +23,7 @@ local function read(timeout)
 	return table.concat(re)
 end
 
-port:open('/dev/ttyUSB2', {flowcontrol = 'XON_XOFF'})
+port:open('/dev/ttyUSB0', {flowcontrol = 'XON_XOFF'})
 read()
 --[[
 print('Remove previous file')

@@ -52,6 +52,21 @@ server:on('receive', function(s, c)
 		local v = adc.read(0)
 		s:send(v)
 	end
+	if c:sub(1, 5) == 'FILE:' then
+		if c:sub(6, 7) == 'S:' then
+			local f = c:sub(8)
+			if f then
+				file.close()
+				file.open(f, 'w+')
+			end
+		end
+		if c:sub(6, 7) == 'E:' then
+			file.close()
+		end
+		if c:sub(6, 7) == 'C:' then
+			file.writeline(c:sub(8))
+		end
+	end
 end)
 
 print('Listen on port 4000')
@@ -59,7 +74,7 @@ server:listen(4000)
 print('Start timer')
 tmr.alarm(0, 1000, 1, function()
 	local v = adc.read(0)
-	if v < 50 then
+	if v > 300 then
 		gpio.write(1, 0)
 	else
 		gpio.write(1, 1)
