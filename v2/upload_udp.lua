@@ -35,3 +35,6 @@ end
 send('FILE:E:'..arg[2])
 print(udp:receivefrom(256))
 
+send('CMD:node.restart()')
+print(udp:receivefrom(256))
+
