@@ -2,7 +2,7 @@ local ctx = {}
 local cmds = {}
 local wifi_reg = true
 
-local ver = '0.1.0'
+local ver = '0.1.2'
 
 if wifi.STATION ~= wifi.getmode() then
 	wifi_reg = false
@@ -28,6 +28,8 @@ for i = 1, 16 do
 		if t.cmd then
 			cmds[t.cmd..':'] = t.func
 		end
+	else
+		break
 	end
 end
 
@@ -36,11 +38,11 @@ local server = net.createServer(net.UDP)
 server:on('receive', function(s, c) 
 	if c:sub(1, 4) == 'CMD:' then
 		local cmd = c:sub(5)
-		local f, err = load(cmd)
+		local f, err = loadstring(cmd)
 		if f then
-			local s = f()
-			print(s)
-			return s:send(s or '')
+			local r = f()
+			print(r)
+			return s:send(r or '')
 		else
 			return s:send('ERROR:'..err)
 		end
@@ -58,6 +60,10 @@ server:on('receive', function(s, c)
 			file.close()
 			file.open(f, 'w+')
 			s:send('FILE OPENED')
+			print('OPENED')
+		else
+			s:send('File name not provided')
+			print('OPEN ERROR')
 		end
 		return
 	end
@@ -70,13 +76,14 @@ server:on('receive', function(s, c)
 		return s:send('+')
 	end
 
-	for c, f in pairs(cmds) do
-		if c:sub(1, c:len()) == c then
+	for cmd, f in pairs(cmds) do
+		if c:sub(1, cmd:len()) == cmd then
 			return f(s, c)
 		end
 	end
 end)
 
+print('init ver:', ver)
 print('listen on port 4000')
 server:listen(4000)
 
@@ -87,6 +94,8 @@ for i = 1, 16 do
 		if t and type(t) == 'function' then
 			t(ctx)
 		end
+	else
+		break
 	end
 end
 

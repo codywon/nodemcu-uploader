@@ -31,7 +31,7 @@ port:write('file.remove("'..arg[1]..'")')
 read()
 ]]--
 print('Open file to write')
-port:write('file.open("'..arg[1]..'", "w+")\n')
+port:write('file.open("'..(arg[2] or arg[1])..'", "w+")\n')
 read()
 
 local f = io.open(arg[1])
