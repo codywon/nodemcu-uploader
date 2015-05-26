@@ -42,7 +42,7 @@ server:on('receive', function(s, c)
 		if f then
 			local r = f()
 			print(r)
-			return s:send(r or '')
+			return s:send(r or 'DONE')
 		else
 			return s:send('ERROR:'..err)
 		end

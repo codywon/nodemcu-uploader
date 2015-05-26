@@ -31,7 +31,7 @@ end
 
 send('INFO:')
 print('R:', udp:receivefrom(256))
-send('FILE:S:'..file)
+send('FILE:S:'..file..'.new')
 print('R:', udp:receivefrom(256))
 
 for line in f:lines() do
@@ -40,9 +40,13 @@ for line in f:lines() do
 	print(udp:receivefrom(256))
 end
 
-send('FILE:E:'..file)
+send('FILE:E:'..file..'.new')
 print(udp:receivefrom(256))
 
+send('CMD:file.remove("'..file..'")')
+print(udp:receivefrom(256))
+send('CMD:file.rename("'..file..'.new", "'..file..'")')
+print(udp:receivefrom(256))
 --if 'init.lua' == file then
 	send('CMD:node.restart()')
 	print(udp:receivefrom(256))
