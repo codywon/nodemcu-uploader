@@ -40,11 +40,11 @@ server:on('receive', function(s, c)
 		local cmd = c:sub(5)
 		local f, err = loadstring(cmd)
 		if f then
-			local r = f()
+			local r = f() or 'DONE'
 			print(r)
-			return s:send(r or 'DONE')
+			return s:send('ADC:'..r)
 		else
-			return s:send('ERROR:'..err)
+			return s:send('ADC:ERROR:'..err)
 		end
 	end
 	if c:sub(1, 4) == 'VER:' then
@@ -52,7 +52,7 @@ server:on('receive', function(s, c)
 	end
 	if c:sub(1, 5) == 'INFO:' then
 		local t = { node.info() };
-		return s:send('NodeMCU:'..table.concat(t, '\t'))
+		return s:send('INFO:NodeMCU:'..table.concat(t, '\t'))
 	end
 	if c:sub(1, 7) == 'FILE:S:' then
 		local f = c:sub(8)

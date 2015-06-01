@@ -18,7 +18,8 @@ return {
 				r = gpio.read(i) or 'UNKONWN STATE'
 			end
 		end
+		r = r or 'UNKNOWN:'..data
 
-		skt:send(r or 'UNKNOWN:'..data)
+		skt:send('GPIO:'..r)
 	end
 }
