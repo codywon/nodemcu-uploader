@@ -14,7 +14,7 @@ while true do
 	while data do
 		--io.write(data)
 		if data ~= '\n' and data ~= '> ' then
-			print(data)
+			print(ip, ':', data)
 		end
 		data, ip, port = udp:receivefrom(256)
 	end

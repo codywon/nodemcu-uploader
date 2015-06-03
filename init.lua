@@ -5,15 +5,13 @@ if wifi.STATION ~= wifi.getmode() then
 else
 	local s = wifi.sta.getip()
 	if not s then
-		if 0 == wifi.sta.status() then
-			wifi_reg = true
-		end
+		wifi_reg = false
 	end
 end
 
-if wifi_reg then
+if not wifi_reg then
 	wifi.setmode(wifi.STATION)
-	wifi.sta.config("CCH-DIRK", "12345678901232")
+	wifi.sta.config("CCH-DIRK", "12345678")
 	wifi.sta.connect()
 end
 

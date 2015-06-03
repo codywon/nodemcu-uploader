@@ -2,22 +2,20 @@ local ctx = {}
 local cmds = {}
 local wifi_reg = true
 
-local ver = '0.1.2'
+local ver = '0.1.4'
 
 if wifi.STATION ~= wifi.getmode() then
 	wifi_reg = false
 else
 	local s = wifi.sta.getip()
 	if not s then
-		if 0 == wifi.sta.status() then
-			wifi_reg = true
-		end
+		wifi_reg = false
 	end
 end
 
-if wifi_reg then
+if not wifi_reg then
 	wifi.setmode(wifi.STATION)
-	wifi.sta.config("CCH-DIRK", "12345678901232")
+	wifi.sta.config("CCH-DIRK", "12345678")
 	wifi.sta.connect()
 end
 
@@ -40,11 +38,11 @@ server:on('receive', function(s, c)
 		local cmd = c:sub(5)
 		local f, err = loadstring(cmd)
 		if f then
-			local r = f() or 'DONE'
+			local r = table.concat({f()}, '\t')
 			print(r)
-			return s:send('ADC:'..r)
+			return s:send('CMD:'..r)
 		else
-			return s:send('ADC:ERROR:'..err)
+			return s:send('CMD:ERROR:'..err)
 		end
 	end
 	if c:sub(1, 4) == 'VER:' then
