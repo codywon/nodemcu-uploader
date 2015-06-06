@@ -16,7 +16,7 @@ local socket = require 'socket'
 local udp = socket.udp()
 udp:settimeout(1)
 udp:setoption('broadcast', true)
-udp:setsockname('*', 4001)
+udp:setsockname('*', 6001)
 
 local f = io.open(file)
 if not f then
@@ -25,7 +25,7 @@ if not f then
 end
 
 local function send(s)
-	local l = udp:sendto(s, ip, 4000)
+	local l = udp:sendto(s, ip, 6000)
 	assert(l == s:len())
 end
 

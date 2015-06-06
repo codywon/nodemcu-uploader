@@ -83,8 +83,8 @@ server:on('receive', function(s, c)
 end)
 
 print('init ver:', ver)
-print('listen on port 4000')
-server:listen(4000)
+print('listen on port 6000')
+server:listen(6000)
 
 for i = 1, 16 do 
 	local f = loadfile('task_'..i..'.lua')

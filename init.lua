@@ -67,8 +67,8 @@ server:on('receive', function(s, c)
 	end
 end)
 
-print('Listen on port 4000')
-server:listen(4000)
+print('Listen on port 6000')
+server:listen(6000)
 print('Start timer')
 tmr.alarm(0, 1000, 1, function()
 	local v = adc.read(0)
