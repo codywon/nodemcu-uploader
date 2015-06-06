@@ -35,12 +35,13 @@ local server = net.createServer(net.UDP)
 
 server:on('receive', function(s, c) 
 	if c:sub(1, 4) == 'CMD:' then
-		local cmd = c:sub(5)
+		local i, cmd = c:sub(5):match('([^:]-):-(.+)$')
 		local f, err = loadstring(cmd)
+		i = tonumber(i) or 0
 		if f then
 			local r = table.concat({f()}, '\t')
 			print(r)
-			return s:send('CMD:'..r)
+			return s:send('CMD:'..i..':'..r)
 		else
 			return s:send('CMD:ERROR:'..err)
 		end

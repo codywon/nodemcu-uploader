@@ -3,8 +3,10 @@
 local socket = require 'socket'
 
 local udp = socket.udp()
+--udp:setsockname('*', 4000)
 udp:settimeout(1)
 udp:setoption('broadcast', true)
+
 while true do
 	io.write('> ')
 	local s = io.read()
