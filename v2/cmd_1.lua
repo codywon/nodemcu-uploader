@@ -14,12 +14,18 @@ return {
 		elseif op == 'r' then
 			local i = tonumber(data:sub(2))
 			if i then
-				gpio.mode(i, gpio.INPUT)
+	--			gpio.mode(i, gpio.INPUT)
 				r = gpio.read(i) or 'UNKONWN STATE'
 			end
+		elseif op == 'a' then
+			local t = {}
+			for i = 1, 12 do
+				t[i] = gpio.read(i)
+			end
+			r = table.concat(t, ':')
 		end
 		r = r or 'UNKNOWN:'..data
 
-		skt:send('GPIO:'..r)
+		skt:send('GPIO:'..data..':'..r)
 	end
 }

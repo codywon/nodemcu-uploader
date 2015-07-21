@@ -3,14 +3,14 @@
 local socket = require 'socket'
 
 local udp = socket.udp()
---udp:setsockname('*', 4000)
+udp:setsockname('*', 6000)
 udp:settimeout(1)
 udp:setoption('broadcast', true)
 
 while true do
 	io.write('> ')
 	local s = io.read()
-	udp:sendto(s, "255.255.255.255", 4000)
+	udp:sendto(s, "255.255.255.255", 6000)
 	local data, ip, port = udp:receivefrom(256)
 	--print(data, ip, port)
 	while data do
